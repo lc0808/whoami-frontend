@@ -56,20 +56,12 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     socket.on("connect_error", handleConnectError);
     socket.io.on("reconnect_attempt", handleReconnectAttempt);
 
-    const handleBeforeUnload = () => {
-      try {
-        socket.disconnect();
-      } catch {}
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
     return () => {
       socket.off("connect", handleConnect);
       socket.off("disconnect", handleDisconnect);
       socket.off("error", handleError);
       socket.off("connect_error", handleConnectError);
       socket.io.off("reconnect_attempt", handleReconnectAttempt);
-      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [socket]);
 

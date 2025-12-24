@@ -4,6 +4,7 @@ import { useRoom } from "../hooks/useRoom";
 import { usePlayerContext } from "../contexts/PlayerContext";
 import { useRoomProtection } from "../hooks/useRoomProtection";
 import { useRoomAccessGuard } from "../hooks/useRoomAccessGuard";
+import { useRoomSync } from "../hooks/useRoomSync";
 import { Button } from "../components/ui/Button";
 import { RoomCode } from "../components/game/RoomCode";
 import { Card } from "../components/ui/Card";
@@ -23,6 +24,8 @@ export function Lobby() {
   });
   const navigate = useNavigate();
   const [isStarting, setIsStarting] = useState(false);
+
+  useRoomSync();
 
   const currentPlayer = room?.players.find((p) => p.id === playerId);
   const isOwner = currentPlayer?.isOwner || false;

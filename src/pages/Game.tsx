@@ -5,6 +5,7 @@ import { useGame } from "../hooks/useGame";
 import { usePlayerContext } from "../contexts/PlayerContext";
 import { useRoomProtection } from "../hooks/useRoomProtection";
 import { useRoomAccessGuard } from "../hooks/useRoomAccessGuard";
+import { useRoomSync } from "../hooks/useRoomSync";
 import { useCustomModePairing } from "../hooks/useCustomModePairing";
 import { GameBoard } from "../components/game/GameBoard";
 import { CharacterAssignment } from "../components/game/CharacterAssignment";
@@ -30,6 +31,8 @@ export function Game() {
   const [isEndingRound, setIsEndingRound] = useState(false);
   const [showCountdown, setShowCountdown] = useState(false);
   const countdownShownRef = useRef(false);
+
+  useRoomSync();
 
   const assignedPlayerIds = useMemo(() => {
     if (!room?.assignments) return new Set<string>();

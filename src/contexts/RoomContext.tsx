@@ -3,8 +3,10 @@ import {
   useContext,
   useState,
   useEffect,
+  useRef,
   type ReactNode,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import type { Room, PlayerView } from "../types";
 import { useSocketContext } from "./SocketContext";
 import { gameSession } from "../utils/sessionStorage";
@@ -26,6 +28,8 @@ export function RoomProvider({ children }: { children: ReactNode }) {
   const [room, setRoom] = useState<Room | null>(null);
   const [playerView, setPlayerView] = useState<PlayerView | null>(null);
   const { socket, isConnected } = useSocketContext();
+  const navigate = useNavigate();
+  const attemptingRejoinRef = useRef(false);
 
   const normalizeRoom = (incoming: Room): Room => {
     if (!incoming) return incoming;
@@ -53,7 +57,21 @@ export function RoomProvider({ children }: { children: ReactNode }) {
     const session = gameSession.restore();
     if (session && !room) {
       logger.info("🔄 Auto-rejoining room:", session.roomId);
+      attemptingRejoinRef.current = true;
       socketService.rejoinRoom(socket, session.roomId, session.playerId);
+      const fallback = setTimeout(() => {
+        if (attemptingRejoinRef.current && !room) {
+          logger.warn(
+            "⚠️ Rejoin timed out — clearing session and returning to home"
+          );
+          gameSession.clear();
+          setRoom(null);
+          setPlayerView(null);
+          attemptingRejoinRef.current = false;
+          navigate("/");
+        }
+      }, 7000);
+      return () => clearTimeout(fallback);
     }
   }, [socket, isConnected, room]);
 
@@ -106,6 +124,12 @@ export function RoomProvider({ children }: { children: ReactNode }) {
         );
       }
 
+      logger.info(
+        `👤 Player left: ${leftPlayer?.name || "unknown"}, room state: ${
+          updatedRoom.gameState
+        }, players: ${updatedRoom.players.length}`
+      );
+
       if (
         session &&
         updatedRoom.players.every((p) => p.id !== session.playerId)
@@ -140,6 +164,27 @@ export function RoomProvider({ children }: { children: ReactNode }) {
       );
     };
 
+    const handleServerInfo = (data: { message: string; reason?: string }) => {
+      logger.info("ℹ️ Server info:", data.message);
+
+      if (
+        data.reason === "player-disconnected-during-assignment" ||
+        data.reason === "player-left-during-assignment"
+      ) {
+        toast.custom(
+          () => (
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-red-950/80 to-orange-950/80 border border-red-700/50 text-red-100 text-sm font-medium">
+              <LogOut className="w-5 h-5 flex-shrink-0" />
+              <span>{data.message}</span>
+            </div>
+          ),
+          {
+            duration: 3000,
+          }
+        );
+      }
+    };
+
     const handleGameStarted = (view: PlayerView) => {
       logger.info("🎮 Game started event received:", view);
       setPlayerView(view);
@@ -164,12 +209,29 @@ export function RoomProvider({ children }: { children: ReactNode }) {
       });
     };
 
+    const handleError = (message: string) => {
+      if (
+        attemptingRejoinRef.current &&
+        (message === "Player not found in room" || message === "Room not found")
+      ) {
+        logger.warn("❌ Rejoin failed:", message);
+        gameSession.clear();
+        setRoom(null);
+        setPlayerView(null);
+        attemptingRejoinRef.current = false;
+        navigate("/");
+        return;
+      }
+    };
+
     socket.on("room-created", handleRoomCreated);
     socket.on("room-updated", handleRoomUpdated);
     socket.on("player-joined", handlePlayerJoined);
     socket.on("player-left", handlePlayerLeft);
     socket.on("round-ended", handleRoundEnded);
     socket.on("game-started", handleGameStarted);
+    socket.on("info", handleServerInfo);
+    socket.on("error", handleError);
 
     return () => {
       socket.off("room-created", handleRoomCreated);
@@ -178,6 +240,8 @@ export function RoomProvider({ children }: { children: ReactNode }) {
       socket.off("player-left", handlePlayerLeft);
       socket.off("round-ended", handleRoundEnded);
       socket.off("game-started", handleGameStarted);
+      socket.off("info", handleServerInfo);
+      socket.off("error", handleError);
     };
   }, [socket]);
 
