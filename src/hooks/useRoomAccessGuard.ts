@@ -38,7 +38,9 @@ export function useRoomAccessGuard(options?: UseRoomAccessGuardOptions) {
     if (room.id !== roomId) {
       if (!toastShownRef.current) {
         toastShownRef.current = true;
-        logger.warn(`❌ Acesso negado: roomId inválido (${roomId} !== ${room.id})`);
+        logger.warn(
+          `❌ Acesso negado: roomId inválido (${roomId} !== ${room.id})`
+        );
         toast.error("Sala não encontrada. Redirecionando...");
         setTimeout(() => navigate("/"), 500);
       }
@@ -65,7 +67,9 @@ export function useRoomAccessGuard(options?: UseRoomAccessGuardOptions) {
 
       if (!requiredStates.includes(room.gameState)) {
         logger.debug(
-          `⚠️  Estado do jogo não permitido: ${room.gameState} (esperado: ${requiredStates.join(", ")})`
+          `⚠️  Estado do jogo não permitido: ${
+            room.gameState
+          } (esperado: ${requiredStates.join(", ")})`
         );
         setHasAccess(true);
         return;
@@ -78,4 +82,3 @@ export function useRoomAccessGuard(options?: UseRoomAccessGuardOptions) {
 
   return { hasAccess };
 }
-
