@@ -37,6 +37,7 @@ export function GameBoard({ playerView, currentPlayerId }: GameBoardProps) {
                 ...player,
                 assignment: player.assignedItem,
               }}
+              showAssignment={true}
             />
           ))}
         </div>
