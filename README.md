@@ -1,122 +1,122 @@
-# 🎮 Quem sou eu? - Frontend
+# 🎮 Who Am I? - Frontend
 
-Um jogo multiplayer em tempo real onde os jogadores descobrem qual personagem foram atribuídos através de dicas e interações. Desenvolvido com React, TypeScript e Socket.IO para proporcionar uma experiência fluida e interativa.
+A real-time multiplayer game where players discover which character they've been assigned through hints and interactions. Built with React, TypeScript, and Socket.IO to provide a smooth and interactive experience.
 
 ## ✨ Features
 
-- 🎯 **Jogo em Tempo Real** - Comunicação bidirecional via WebSocket
-- 🎨 **Interface Moderna** - Design responsivo e animações fluidas com GSAP
-- 🔐 **Sistema de Salas** - Criação e entrada em salas com códigos únicos
-- 👥 **Multiplayer** - Suporte para múltiplos jogadores simultâneos
-- 🎭 **Dois Modos de Jogo**:
-  - **Preset**: Personagens predefinidos por categoria (animais, celebridades, comidas, etc.)
-  - **Customizado**: Jogadores atribuem personagens uns aos outros
-- 🛡️ **Proteção de Rotas** - Sistema robusto de guards e validações
-- 💾 **Persistência de Sessão** - Reconexão automática em caso de desconexão
+- 🎯 **Real-Time Game** - Bidirectional communication via WebSocket
+- 🎨 **Modern Interface** - Responsive design with smooth GSAP animations
+- 🔐 **Room System** - Create and join rooms with unique codes
+- 👥 **Multiplayer** - Support for multiple simultaneous players
+- 🎭 **Two Game Modes**:
+  - **Preset**: Pre-defined characters by category (animals, celebrities, foods, etc.)
+  - **Custom**: Players assign characters to each other
+- 🛡️ **Route Protection** - Robust guard and validation system
+- 💾 **Session Persistence** - Automatic reconnection on disconnection
 
-## 🚀 Tecnologias
+## 🚀 Technologies
 
-- **React 18** - Biblioteca UI
-- **TypeScript** - Tipagem estática
-- **Vite** - Build tool e dev server
-- **Socket.IO Client** - Comunicação em tempo real
-- **React Router DOM** - Roteamento
-- **TailwindCSS** - Estilização
-- **GSAP** - Animações
-- **Sonner** - Notificações toast
-- **Lucide React** - Ícones
+- **React 18** - UI Library
+- **TypeScript** - Static typing
+- **Vite** - Build tool and dev server
+- **Socket.IO Client** - Real-time communication
+- **React Router DOM** - Routing
+- **TailwindCSS** - Styling
+- **GSAP** - Animations
+- **Sonner** - Toast notifications
+- **Lucide React** - Icons
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 src/
 ├── components/
-│   ├── game/          # Componentes específicos do jogo
-│   ├── layout/        # Layout e estrutura
-│   └── ui/            # Componentes reutilizáveis
-├── contexts/          # Contextos React (Socket, Room, Player)
+│   ├── game/          # Game-specific components
+│   ├── layout/        # Layout and structure
+│   └── ui/            # Reusable components
+├── contexts/          # React contexts (Socket, Room, Player)
 ├── hooks/             # Custom hooks
-├── pages/             # Páginas da aplicação
-├── routes/            # Configuração de rotas
-├── services/          # Serviços (Socket.IO)
-├── types/             # Definições TypeScript
-└── utils/             # Utilitários e helpers
+├── pages/             # Application pages
+├── routes/            # Route configuration
+├── services/          # Services (Socket.IO)
+├── types/             # TypeScript definitions
+└── utils/             # Utilities and helpers
 ```
 
-## 🛠️ Instalação
+## 🛠️ Installation
 
 ```bash
-# Clone o repositório
+# Clone the repository
 git clone https://github.com/lc0808/whoami-frontend.git
 
-# Entre no diretório
+# Enter the directory
 cd whoami-frontend
 
-# Instale as dependências
+# Install dependencies
 npm install --legacy-peer-deps
 
-# Configure as variáveis de ambiente
+# Configure environment variables
 cp .env.example .env
 ```
 
-## ⚙️ Configuração
+## ⚙️ Configuration
 
-Edite o arquivo `.env` com a URL do servidor backend:
+Edit the `.env` file with the backend server URL:
 
 ```env
 VITE_SOCKET_URL=http://localhost:3000
 ```
 
-## 🎯 Executar
+## 🎯 Running
 
 ```bash
-# Modo desenvolvimento
+# Development mode
 npm run dev
 
-# Build para produção
+# Production build
 npm run build
 
-# Preview do build
+# Build preview
 npm run preview
 
-# Verificar tipos
+# Type checking
 npm run type-check
 
 # Lint
 npm run lint
 ```
 
-## 🎮 Como Jogar
+## 🎮 How to Play
 
-1. **Criar Sala**: Escolha o modo de jogo e categoria (se preset)
-2. **Compartilhar Código**: Envie o código da sala para os amigos
-3. **Aguardar Jogadores**: Mínimo 2 jogadores para iniciar
-4. **Atribuição**: No modo customizado, atribua personagens
-5. **Descobrir**: Deduza qual personagem você é!
+1. **Create Room**: Choose game mode and category (if preset)
+2. **Share Code**: Send the room code to friends
+3. **Wait for Players**: Minimum 2 players to start
+4. **Assignment**: In custom mode, assign characters
+5. **Discover**: Deduce which character you are!
 
-## 🧩 Funcionalidades Técnicas
+## 🧩 Technical Features
 
-- **Context API** para gerenciamento de estado global
-- **Custom Hooks** para lógica reutilizável
-- **Route Guards** para proteção de rotas
-- **Session Storage** para persistência de dados
-- **Error Boundaries** para tratamento de erros
-- **TypeScript** para type safety
-- **Responsive Design** mobile-first
+- **Context API** for global state management
+- **Custom Hooks** for reusable logic
+- **Route Guards** for route protection
+- **Session Storage** for data persistence
+- **Error Boundaries** for error handling
+- **TypeScript** for type safety
+- **Responsive Design** mobile-first approach
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
 **Lucas Carvalho**
 
-- Portfolio: [em construção]
+- Portfolio: [under construction]
 - LinkedIn: [linkedin.com/in/lucas-carvalho-32aa70227](https://linkedin.com/in/lucas-carvalho-32aa70227)
 - GitHub: [@lc0808](https://github.com/lc0808)
 - Email: lucasvieirac.dev@gmail.com
 
-## 📄 Licença
+## 📄 License
 
-Este projeto foi desenvolvido para fins educacionais e de portfólio.
+This project was developed for educational and portfolio purposes.
 
 ---
 
-⭐ **Desenvolvido com React + TypeScript + Socket.IO**
+⭐ **Built with React + TypeScript + Socket.IO**
