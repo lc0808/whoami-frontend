@@ -27,16 +27,16 @@ export function RoomCode({ code }: RoomCodeProps) {
     <div className="contents">
       <Button
         onClick={handleCopy}
-        className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-sm md:text-base"
+        className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-semibold py-2 sm:py-2.5 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
       >
         {copied ? (
           <>
-            <Check size={18} />
+            <Check size={14} className="sm:w-5 sm:h-5" />
             <span>Copiado!</span>
           </>
         ) : (
           <>
-            <Copy size={18} />
+            <Copy size={14} className="sm:w-5 sm:h-5" />
             <span>Copiar Código</span>
           </>
         )}
@@ -44,16 +44,16 @@ export function RoomCode({ code }: RoomCodeProps) {
 
       <Button
         onClick={handleGenerateLink}
-        className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-sm md:text-base"
+        className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-2 sm:py-2.5 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
       >
         {linkCopied ? (
           <>
-            <Check size={18} />
+            <Check size={14} className="sm:w-5 sm:h-5" />
             <span>Link Copiado!</span>
           </>
         ) : (
           <>
-            <Share2 size={18} />
+            <Share2 size={14} className="sm:w-5 sm:h-5" />
             <span>Gerar Link</span>
           </>
         )}
