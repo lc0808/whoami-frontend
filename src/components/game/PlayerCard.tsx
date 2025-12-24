@@ -4,11 +4,13 @@ import type { Player } from "../../types";
 interface PlayerCardProps {
   player: Player & { assignment?: string };
   isCurrentPlayer?: boolean;
+  showAssignment?: boolean;
 }
 
 export function PlayerCard({
   player,
   isCurrentPlayer = false,
+  showAssignment = false,
 }: PlayerCardProps) {
   return (
     <div
@@ -40,7 +42,7 @@ export function PlayerCard({
           {player.name}
         </p>
 
-        {player.assignment && (
+        {showAssignment && player.assignment && (
           <div
             className={`text-xs px-2 py-1 rounded-full font-semibold ${
               isCurrentPlayer
