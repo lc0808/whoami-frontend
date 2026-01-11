@@ -13,15 +13,13 @@ export function useSocketHeartbeat(config?: HeartbeatConfig) {
   const heartbeatIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
     null
   );
-  const heartbeatTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const heartbeatTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
   const lastHeartbeatRef = useRef<number>(Date.now());
   const missedHeartbeatsRef = useRef(0);
 
-  const {
-    enabled = true,
-    interval = 15000,
-    timeout = 5000,
-  } = config || {};
+  const { enabled = true, interval = 15000, timeout = 5000 } = config || {};
 
   useEffect(() => {
     if (!socket || !isConnected || !enabled) {

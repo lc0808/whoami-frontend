@@ -54,7 +54,7 @@ export function useRoomSync() {
         if (!response?.isSynced) {
           failedSyncCountRef.current++;
           const errorMsg = response?.error || "Unknown error";
-          
+
           logger.warn(
             `❌ Room sync failed (#${failedSyncCountRef.current}): ${errorMsg}`
           );
@@ -63,14 +63,16 @@ export function useRoomSync() {
             logger.error("❌ Session expired - sync failed multiple times");
             gameSession.clear();
             setRoom(null);
-            
+
             if (!toastShownRef.current) {
               toastShownRef.current = true;
               toast.error("Sua sessão expirou. Retornando ao início...");
               setTimeout(() => navigate("/"), 1500);
             }
           } else {
-            toast.warning("Falha na sincronização da sala. Tentando novamente...");
+            toast.warning(
+              "Falha na sincronização da sala. Tentando novamente..."
+            );
           }
           return;
         }

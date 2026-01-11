@@ -39,10 +39,10 @@ export const gameSession = {
       const stored = sessionStorage.getItem(SESSION_KEY);
       if (!stored) return null;
       const session = JSON.parse(stored) as GameSession;
-      
+
       const sessionAge = Date.now() - (session.timestamp || 0);
       const MAX_SESSION_AGE = 30 * 60 * 1000;
-      
+
       if (sessionAge > MAX_SESSION_AGE) {
         logger.warn("⏰ Sessão expirada por inatividade");
         this.clear();

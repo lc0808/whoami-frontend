@@ -18,15 +18,20 @@ export function useDisconnectionRecovery() {
   const { socket } = useSocket();
   const { room } = useRoomContext();
   const { playerId } = usePlayerContext();
-  const [disconnectionState, setDisconnectionState] = useState<DisconnectionState>({
-    isDisconnected: false,
-    attemptCount: 0,
-    nextRetryIn: 0,
-    isRecovering: false,
-  });
+  const [disconnectionState, setDisconnectionState] =
+    useState<DisconnectionState>({
+      isDisconnected: false,
+      attemptCount: 0,
+      nextRetryIn: 0,
+      isRecovering: false,
+    });
 
-  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+  const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
+    null
+  );
   const wasConnectedRef = useRef(false);
 
   const getBackoffDelay = (attemptCount: number): number => {
@@ -58,7 +63,9 @@ export function useDisconnectionRecovery() {
       isRecovering: true,
     }));
 
-    logger.info(`🔄 Attempting recovery #${disconnectionState.attemptCount + 1}`);
+    logger.info(
+      `🔄 Attempting recovery #${disconnectionState.attemptCount + 1}`
+    );
 
     try {
       const recoveryPromise = new Promise<boolean>((resolve) => {
@@ -190,7 +197,10 @@ export function useDisconnectionRecovery() {
   }, [socket, room, disconnectionState.isDisconnected]);
 
   useEffect(() => {
-    if (disconnectionState.nextRetryIn > 0 && !disconnectionState.isRecovering) {
+    if (
+      disconnectionState.nextRetryIn > 0 &&
+      !disconnectionState.isRecovering
+    ) {
       if (countdownIntervalRef.current) {
         clearInterval(countdownIntervalRef.current);
       }
