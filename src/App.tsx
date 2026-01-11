@@ -5,6 +5,7 @@ import { RoomProvider } from './contexts/RoomContext';
 import { PlayerProvider } from './contexts/PlayerContext';
 import { AppRoutes } from './routes/AppRoutes';
 import { ErrorBoundary } from './components/layout/ErrorBoundary';
+import { ConnectionStatus } from './components/ui/ConnectionStatus';
 
 export function App() {
   return (
@@ -14,6 +15,7 @@ export function App() {
           <PlayerProvider>
             <RoomProvider>
               <AppRoutes />
+              <ConnectionStatus />
               <Toaster 
                 position="top-right"
                 richColors

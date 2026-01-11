@@ -70,7 +70,7 @@ export function RoomProvider({ children }: { children: ReactNode }) {
           attemptingRejoinRef.current = false;
           navigate("/");
         }
-      }, 7000);
+      }, 12000);
       return () => clearTimeout(fallback);
     }
   }, [socket, isConnected, room]);
@@ -85,15 +85,19 @@ export function RoomProvider({ children }: { children: ReactNode }) {
       if (session) {
         gameSession.save({ ...session, roomId: normalized.id });
       }
+      gameSession.updateRoom(normalized);
     };
 
     const handleRoomUpdated = (updatedRoom: Room) => {
-      setRoom(normalizeRoom(updatedRoom));
+      const normalized = normalizeRoom(updatedRoom);
+      setRoom(normalized);
+      gameSession.updateRoom(normalized);
     };
 
     const handlePlayerJoined = (updatedRoom: Room) => {
       const normalizedRoom = normalizeRoom(updatedRoom);
       setRoom(normalizedRoom);
+      gameSession.updateRoom(normalizedRoom);
 
       const session = gameSession.restore();
       const lastPlayer =
@@ -140,6 +144,7 @@ export function RoomProvider({ children }: { children: ReactNode }) {
       } else {
         const normalizedRoom = normalizeRoom(updatedRoom);
         setRoom(normalizedRoom);
+        gameSession.updateRoom(normalizedRoom);
 
         if (leftPlayer && session?.playerId !== leftPlayer.id) {
           toast.custom(
@@ -158,7 +163,9 @@ export function RoomProvider({ children }: { children: ReactNode }) {
     };
 
     const handleRoundEnded = (updatedRoom: Room) => {
-      setRoom(normalizeRoom(updatedRoom));
+      const normalized = normalizeRoom(updatedRoom);
+      setRoom(normalized);
+      gameSession.updateRoom(normalized);
       setPlayerView((prev) =>
         prev ? { ...prev, gameState: "finished" } : null
       );
@@ -188,6 +195,7 @@ export function RoomProvider({ children }: { children: ReactNode }) {
     const handleGameStarted = (view: PlayerView) => {
       logger.info("🎮 Game started event received:", view);
       setPlayerView(view);
+      gameSession.updatePlayerView(view);
       setRoom((prevRoom) => {
         if (!prevRoom) return null;
 
@@ -200,12 +208,14 @@ export function RoomProvider({ children }: { children: ReactNode }) {
           };
         });
 
-        return normalizeRoom({
+        const updatedRoom = normalizeRoom({
           ...prevRoom,
           gameState: view.gameState ?? prevRoom.gameState,
           currentRound: view.currentRound ?? prevRoom.currentRound,
           players: updatedPlayers,
         });
+        gameSession.updateRoom(updatedRoom);
+        return updatedRoom;
       });
     };
 

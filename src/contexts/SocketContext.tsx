@@ -39,7 +39,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     };
 
     const handleReconnectAttempt = (attempt: number) => {
-      logger.warn(`Socket reconnect attempt #${attempt}`);
+      logger.warn(`🔄 Socket reconnect attempt #${attempt}`);
     };
 
     if (!socket.connected) {

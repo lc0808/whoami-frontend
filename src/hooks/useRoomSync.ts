@@ -15,6 +15,8 @@ export function useRoomSync() {
   const syncIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const lastSyncRef = useRef<number>(0);
   const syncInProgressRef = useRef(false);
+  const failedSyncCountRef = useRef(0);
+  const toastShownRef = useRef(false);
 
   useEffect(() => {
     if (!socket || !room || !playerId) {
@@ -49,25 +51,46 @@ export function useRoomSync() {
       socket.emit("sync-room", room.id, (response: any) => {
         syncInProgressRef.current = false;
 
-        if (!response.isSynced) {
+        if (!response?.isSynced) {
+          failedSyncCountRef.current++;
+          const errorMsg = response?.error || "Unknown error";
+          
           logger.warn(
-            `❌ Room sync failed: ${response.error} — clearing session`
+            `❌ Room sync failed (#${failedSyncCountRef.current}): ${errorMsg}`
           );
 
-          gameSession.clear();
-          setRoom(null);
-          toast.error("Sua sessão expirou. Retornando ao início...");
-          navigate("/");
+          if (failedSyncCountRef.current >= 3) {
+            logger.error("❌ Session expired - sync failed multiple times");
+            gameSession.clear();
+            setRoom(null);
+            
+            if (!toastShownRef.current) {
+              toastShownRef.current = true;
+              toast.error("Sua sessão expirou. Retornando ao início...");
+              setTimeout(() => navigate("/"), 1500);
+            }
+          } else {
+            toast.warning("Falha na sincronização da sala. Tentando novamente...");
+          }
           return;
         }
 
-        logger.info(`✅ Room sync OK: player ${playerId} in ${room.id}`);
+        failedSyncCountRef.current = 0;
+        logger.debug(`✅ Room sync OK: player ${playerId} in ${room.id}`);
       });
+
+      setTimeout(() => {
+        if (syncInProgressRef.current) {
+          syncInProgressRef.current = false;
+          logger.warn("⚠️ Sync timeout - server not responding");
+          failedSyncCountRef.current++;
+        }
+      }, 8000);
     };
 
-    const initialTimeout = setTimeout(performSync, 2000);
+    const initialTimeout = setTimeout(performSync, 3000);
 
-    syncIntervalRef.current = setInterval(performSync, 8000);
+    syncIntervalRef.current = setInterval(performSync, 10000);
 
     return () => {
       clearTimeout(initialTimeout);
