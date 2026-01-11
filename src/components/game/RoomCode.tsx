@@ -32,12 +32,16 @@ export function RoomCode({ code }: RoomCodeProps) {
         {copied ? (
           <>
             <Check size={14} className="sm:w-5 sm:h-5" />
-            <span>Copiado!</span>
+            <span className="inline-block min-w-[90px] sm:min-w-[110px]">
+              Copiado!
+            </span>
           </>
         ) : (
           <>
             <Copy size={14} className="sm:w-5 sm:h-5" />
-            <span>Copiar Código</span>
+            <span className="inline-block min-w-[90px] sm:min-w-[110px]">
+              Copiar Código
+            </span>
           </>
         )}
       </Button>
@@ -49,12 +53,16 @@ export function RoomCode({ code }: RoomCodeProps) {
         {linkCopied ? (
           <>
             <Check size={14} className="sm:w-5 sm:h-5" />
-            <span>Link Copiado!</span>
+            <span className="inline-block min-w-[80px] sm:min-w-[100px]">
+              Link Copiado!
+            </span>
           </>
         ) : (
           <>
             <Share2 size={14} className="sm:w-5 sm:h-5" />
-            <span>Gerar Link</span>
+            <span className="inline-block min-w-[80px] sm:min-w-[100px]">
+              Gerar Link
+            </span>
           </>
         )}
       </Button>
